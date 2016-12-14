@@ -31,8 +31,17 @@ public class Operations {
 			throw new InsufficentFundsException();
 		}
 		
-		acc1.withdraw(amount);
-		acc2.deposit(amount);
+		// doing thread-safety
+		synchronized (acc1) {
+			synchronized (acc2) {
+
+				acc1.withdraw(amount);
+				acc2.deposit(amount);
+			
+			}
+			
+		}
+		
 		
 		System.out.println("Transfer successful.");
 				
