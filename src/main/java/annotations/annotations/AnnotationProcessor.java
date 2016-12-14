@@ -1,5 +1,6 @@
 package annotations.annotations;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,17 +20,46 @@ public class AnnotationProcessor {
 		loadService("annotations.annotations.LazyService");
 		loadService("java.lang.String");
 	
-		checkObject(servicesMap.get("weaponsSystem"));
-		checkObject(servicesMap.get("heatingSystem"));
-		checkObject(servicesMap.get("coolingSystem"));
+		initService(servicesMap.get("weaponsSystem"));
+		initService(servicesMap.get("heatingSystem"));
+		initService(servicesMap.get("coolingSystem"));
 		
 	}
 	
-	private static void checkObject(Object serviceObj) {
+	private static void initService(Object serviceObj) {
 		if (serviceObj == null) {
-			System.out.println("Object NOT found");
+			System.out.println("Service NOT found");
 		} else {
-			System.out.println("Object " + serviceObj.getClass().getSimpleName() + " found");
+			System.out.println("Service " + serviceObj.getClass().getSimpleName() + " found");
+			
+			for (Method method: serviceObj.getClass().getDeclaredMethods()) {
+				
+				if(method.isAnnotationPresent(Init.class)) {
+					System.out.println("Method " + method.getName() + 
+										" is annotated by @" + Init.class.getSimpleName());
+					
+					try {
+						// TODO check lazyLoad 25:00
+						method.invoke(serviceObj); // calling method
+						
+					} catch (Exception e) {
+					
+						Init ann = method.getAnnotation(Init.class);
+						if(ann.suppressException()) {
+							System.err.println(e.getMessage());
+						} else {
+							throw new RuntimeException(e);
+						}
+						
+					}
+					
+				} else {
+					System.out.println("Method " + method.getName() + 
+							" is NOT annotated");
+				}
+			}
+			
+			
 		}		
 	}
 
