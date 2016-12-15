@@ -34,12 +34,12 @@ public class Operations {
 		// doing thread-safety
 		synchronized (acc1) {
 			
-			System.out.println("acc1 locked");
+			System.out.println(Thread.currentThread().getName() + " locked Account 1");
 			Thread.sleep(1000); // doing deadlock
 			
 			synchronized (acc2) {
 				
-				System.out.println("acc2 locked");
+				System.out.println(Thread.currentThread().getName() + " locked Account 2");
 				
 				acc1.withdraw(amount);
 				acc2.deposit(amount);
