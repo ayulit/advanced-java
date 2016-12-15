@@ -1,6 +1,10 @@
 package concurrency.basic;
 
+import java.util.concurrent.TimeUnit;
+
 public class Operations {
+	
+	final static int WAIT_MSEC = 1500;
 
 	public static void main(String[] args) throws InsufficentFundsException, InterruptedException {
 		
@@ -32,24 +36,31 @@ public class Operations {
 		}
 		
 		// doing thread-safety
-		synchronized (acc1) {
-			
-			System.out.println(Thread.currentThread().getName() + " locked Account 1");
-			Thread.sleep(1000); // doing deadlock
-			
-			synchronized (acc2) {
+		if(acc1.getLock().tryLock(WAIT_MSEC, TimeUnit.MILLISECONDS)) {
+			try {
+				if(acc2.getLock().tryLock(WAIT_MSEC, TimeUnit.MILLISECONDS)) {
+					try {
+					
+						// do transfer
+						
+						acc1.withdraw(amount);
+						acc2.deposit(amount);
+
+						System.out.println("Transfer successful.");
+									
+						
+					} finally {
+						acc2.getLock().unlock();
+					}
+				}
 				
-				System.out.println(Thread.currentThread().getName() + " locked Account 2");
-				
-				acc1.withdraw(amount);
-				acc2.deposit(amount);
-			
+			} finally {
+				acc1.getLock().unlock();
 			}
-			
+		} else {
+			// Error waiting lock
+			System.out.println("Can't lock");
 		}
-		
-		
-		System.out.println("Transfer successful.");
 				
 	}
 
