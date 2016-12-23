@@ -10,7 +10,7 @@ public class DataObject extends NonSerializable implements Serializable {
 	private int i = 5;
 	private String s = "aaa";
 	private transient String[] def;
-	CustomObject customObject;
+	CustomObject customObject = new CustomObject(); // will be Exception w/o imp Serializible or Externializible on it
 	
 	public int getI() {
 		return i;

@@ -34,7 +34,7 @@ public class Operations {
 		System.out.println(objNew);
 		System.out.println(objNew.getI());
 		System.out.println(objNew.getMyData()); // nothing
-		
+		System.out.println(objNew.customObject.isB());
 
 	}
 
