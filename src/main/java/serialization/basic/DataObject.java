@@ -23,6 +23,8 @@ public class DataObject extends NonSerializable implements Serializable {
 	private String s = "aaa";
 	 
 	private transient String[] def;
+	
+	@XmlElement
 	CustomObject customObject = new CustomObject(); // will be Exception w/o imp Serializible or Externializible on it
 	
 	@XmlAttribute // will be attribute
