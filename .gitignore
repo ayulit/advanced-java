@@ -1,4 +1,6 @@
+/bin
 *.bin
+store.xml
 *.cpgz
 .classpath
 .project

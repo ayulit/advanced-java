@@ -13,13 +13,12 @@ public class Operations {
 		
 		DataObject obj = new DataObject();
 		obj.setMyData("haha");
-	
-		
+
 		File file = new File("store.bin");
-		
+
 		FileOutputStream fo = new FileOutputStream(file);
 		ObjectOutputStream so = new ObjectOutputStream(fo);
-		
+
 		so.writeObject(obj);
 		so.flush();
 		so.close();
