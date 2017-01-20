@@ -23,6 +23,7 @@ public class DoMarshalling {
 		dataObj.setMyData("haha");
 		File file = new File("store.xml");
 
+		m.setProperty(m.JAXB_FORMATTED_OUTPUT, true); // marshall into formatted XML
 		m.marshal(dataObj, file);
 		System.out.println("Marshalled");
 
